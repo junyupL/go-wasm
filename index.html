@@ -1,0 +1,21 @@
+<html>
+<body>
+	<script src="wasm_exec.js"></script>
+	<script>
+
+		const go = new Go();
+		
+		WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+			go.run(result.instance);
+			
+		})
+		
+	</script>
+	<button id="left">Left</button>
+	<button id="right">Right</button>
+	
+	<textarea id="myTextBox"></textarea>
+	<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+	</canvas> 
+</body>
+</html>

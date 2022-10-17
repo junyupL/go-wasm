@@ -1,7 +1,9 @@
 package main
 
 import (
+	"math/rand"
 	"syscall/js"
+	"time"
 )
 
 var ctx js.Value
@@ -9,6 +11,19 @@ var canvas js.Value
 var myEntity int
 
 func main() {
+
+	rand.Seed(time.Now().UnixNano())
+
+	for i := 0; i < 30; i++ {
+		currEntity := emptyEID
+		createEntity(controller, position, draw, bot)
+		controllers[currEntity].Speed = 1 + 3*rand.Float64()
+		controllers[currEntity].DirX = 1
+		draws[currEntity].Color = "blue"
+		draws[currEntity].Width = 5 + 10*rand.Float32()
+		draws[currEntity].Height = 5 + 10*rand.Float32()
+		positions[currEntity].Y = 500 * rand.Float64()
+	}
 
 	ctx = js.Global().Get("document").
 		Call("getElementById", "myCanvas").

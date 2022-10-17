@@ -1,6 +1,6 @@
 package main
 
-//go:generate go run generator.go Draw Position Controller
+//go:generate go run generator.go Draw Position Controller Bot
 const (
 	entitySize = 1000
 )
@@ -12,6 +12,7 @@ var emptyEID int = 0
 func System() {
 	SystemControl()
 	SystemDraw()
+	SystemBot()
 }
 
 func SystemControl() {
@@ -29,15 +30,29 @@ func SystemControl() {
 func SystemDraw() {
 	for i := 0; i < entitySize; i++ {
 		if on[draw][i] && on[position][i] {
-			ctx.Call("beginPath")
+			/*ctx.Call("beginPath")
 			ctx.Call("moveTo", 100+positions[i].X, 0+positions[i].Y)
 			ctx.Call("lineTo", 100+positions[i].X, 100+positions[i].Y)
-			ctx.Call("stroke")
+			ctx.Call("stroke")*/
 
 			//ctx.Call("clearRect", 0, 0, width, height);
 			ctx.Set("fillStyle", draws[i].Color)
 			ctx.Call("fillRect", positions[i].X, positions[i].Y, draws[i].Width, draws[i].Height)
 
+		}
+	}
+}
+
+func SystemBot() {
+	for i := 0; i < entitySize; i++ {
+		if on[bot][i] && on[position][i] && on[controller][i] {
+			if positions[i].X+float64(draws[i].Width) >= 1000 {
+				controllers[i].DirX *= -1
+			}
+
+			if positions[i].X < 0 {
+				controllers[i].DirX *= -1
+			}
 		}
 	}
 }
